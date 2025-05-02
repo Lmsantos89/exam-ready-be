@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:15
+    container_name: examready-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: examready
+      POSTGRES_USER: examready_user
+      POSTGRES_PASSWORD: examready_pass
+    volumes:
+      - examready-data:/var/lib/postgresql/data
+volumes:
+  examready-data:
