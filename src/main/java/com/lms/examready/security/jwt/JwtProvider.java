@@ -26,10 +26,10 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class JwtProvider {
 
     @Value("${jwt.secret}")
-    private String JWT_SECRET;
+    private String jwtSecret;
 
     @Value("${jwt.expiration-in-millis}")
-    private Long JWT_EXPIRATION;
+    private Long jwtExpiration;
 
     public static final String AUTH_TOKEN_TYPE = "Bearer ";
     public static final String ROLE_PREFIX = "ROLE_";
@@ -41,7 +41,7 @@ public class JwtProvider {
                 .claim("username", username)
                 .claim("role", role.name())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
+                .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSigningKey(), HS256)
                 .compact();
     }
@@ -51,7 +51,7 @@ public class JwtProvider {
         if (token != null) {
             try {
                 Claims claims = Jwts.parser()
-                        .verifyWith(Keys.hmacShaKeyFor(JWT_SECRET.getBytes()))
+                        .verifyWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
                         .build()
                         .parseSignedClaims(token)
                         .getPayload();
@@ -91,7 +91,7 @@ public class JwtProvider {
     }
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = hexToBytes(JWT_SECRET);
+        byte[] keyBytes = hexToBytes(jwtSecret);
         if (keyBytes.length < 32) {
             throw new IllegalArgumentException("JWT secret must be at least 32 bytes for HS256");
         }
