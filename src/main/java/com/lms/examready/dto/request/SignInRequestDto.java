@@ -1,6 +1,7 @@
 package com.lms.examready.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record SignInRequestDto(
@@ -9,6 +10,9 @@ public record SignInRequestDto(
         String username,
 
         @NotBlank(message = "Password is required")
-        @Size(min = 8, message = "Password must be at least 8 characters")
+        @Size(min = 8, max = 30, message = "Password must be at least 8 characters")
+        @Pattern(regexp = PASSWORD_REGEX)
         String password
-) {}
+) {
+    private static final String PASSWORD_REGEX = "^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]*$";
+}

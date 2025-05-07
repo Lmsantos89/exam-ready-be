@@ -78,23 +78,6 @@ public class JwtProvider {
         return null;
     }
 
-    public boolean validateToken(ServerHttpRequest request) {
-        String token = extractToken(request);
-        if (token != null) {
-            try {
-                Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token);
-                return true;
-            } catch (ExpiredJwtException e) {
-                log.warn("Expired token: {}", e.getMessage());
-                return false;
-            } catch (SignatureException | MalformedJwtException e) {
-                log.warn("Invalid token :{}", e.getMessage());
-                return false;
-            }
-        }
-        return false;
-    }
-
     private String extractToken(ServerHttpRequest request) {
         String bearerToken = request.getHeaders().getFirst(AUTHORIZATION);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(AUTH_TOKEN_TYPE)) {

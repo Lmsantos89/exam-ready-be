@@ -30,7 +30,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign-in")
-    public Mono<ResponseEntity<Void>> signIn(@RequestBody SignInRequestDto signInRequestDto) {
+    public Mono<ResponseEntity<Void>> signIn(@Valid @RequestBody SignInRequestDto signInRequestDto) {
         return authenticationService.signIn(signInRequestDto)
                 .map(jwt -> {
                             HttpHeaders headers = new HttpHeaders();
