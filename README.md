@@ -114,14 +114,13 @@ Content-Type: application/json
   - POST `/api/auth/signin`: User login
 
 ```
-POST /api/auth/sign-up HTTP/1.1
+POST /api/auth/sign-in HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
 
 {
     "username": "user",
-    "password": "testpassword",
-    "email": "test@email.com"
+    "password": "testpassword"
 }
 ```
 

@@ -5,6 +5,7 @@ import com.lms.examready.model.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -14,7 +15,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.crypto.SecretKey;
 import java.util.*;
 
 import static io.jsonwebtoken.Jwts.SIG.HS256;
@@ -26,13 +26,22 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class JwtProvider {
 
     @Value("${jwt.secret}")
-    private String jwtSecret;
+    private String jwtSecretString;
+
+    private byte[] jwtSecret;
 
     @Value("${jwt.expiration-in-millis}")
     private Long jwtExpiration;
 
     public static final String AUTH_TOKEN_TYPE = "Bearer ";
     public static final String ROLE_PREFIX = "ROLE_";
+
+    @PostConstruct
+    public void init() {
+        // Convert hex string to byte array
+        jwtSecret = hexToBytes(jwtSecretString);
+    }
+
 
     public String generateToken(UUID userId, String username, Role role) {
 
@@ -42,7 +51,7 @@ public class JwtProvider {
                 .claim("role", role.name())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
-                .signWith(getSigningKey(), HS256)
+                .signWith(Keys.hmacShaKeyFor(jwtSecret), HS256)
                 .compact();
     }
 
@@ -51,7 +60,7 @@ public class JwtProvider {
         if (token != null) {
             try {
                 Claims claims = Jwts.parser()
-                        .verifyWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
+                        .verifyWith(Keys.hmacShaKeyFor(jwtSecret))
                         .build()
                         .parseSignedClaims(token)
                         .getPayload();
@@ -88,14 +97,6 @@ public class JwtProvider {
 
         }
         return null;
-    }
-
-    private SecretKey getSigningKey() {
-        byte[] keyBytes = hexToBytes(jwtSecret);
-        if (keyBytes.length < 32) {
-            throw new IllegalArgumentException("JWT secret must be at least 32 bytes for HS256");
-        }
-        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     private byte[] hexToBytes(String hex) {
