@@ -56,7 +56,7 @@ class AuthenticationServiceTest {
      * the method returns a JWT token.
      */
     @Test
-    public void testSignInSuccessWithValidCredentials() {
+    void testSignInSuccessWithValidCredentials() {
         UUID userId = UUID.randomUUID();
 
         SignInRequestDto signInRequestDto = new SignInRequestDto("validUser", "validPassword");
@@ -87,7 +87,7 @@ class AuthenticationServiceTest {
      * Expects a BadCredentialsException to be thrown.
      */
     @Test
-    public void testSignInWithDisabledAccount() {
+    void testSignInWithDisabledAccount() {
         SignInRequestDto signInRequestDto = new SignInRequestDto("disabledUser", "password");
         User disabledUser = new User();
         disabledUser.setEnabled(false);
@@ -107,7 +107,7 @@ class AuthenticationServiceTest {
      * Expects a BadCredentialsException to be thrown.
      */
     @Test
-    public void testSignInWithIncorrectPassword() {
+    void testSignInWithIncorrectPassword() {
         SignInRequestDto signInRequestDto = new SignInRequestDto("validUser", "incorrectPassword");
         User validUser = new User();
         validUser.setEnabled(true);
@@ -130,7 +130,7 @@ class AuthenticationServiceTest {
      * Expects a BadCredentialsException to be thrown.
      */
     @Test
-    public void testSignInWithNonExistentUsername() {
+    void testSignInWithNonExistentUsername() {
         SignInRequestDto signInRequestDto = new SignInRequestDto("nonexistent", "password");
         when(userService.findByUsername(signInRequestDto.username())).thenReturn(Mono.empty());
 
@@ -148,7 +148,7 @@ class AuthenticationServiceTest {
      * It should return a Mono that emits a UserAlreadyExistsException.
      */
     @Test
-    public void testSignUpWithExistingUsername() {
+    void testSignUpWithExistingUsername() {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto("existingUser", "password", "email@example.com");
         User existingUser = new User();
         existingUser.setUsername("existingUser");
@@ -172,7 +172,7 @@ class AuthenticationServiceTest {
      * This test verifies that the method throws a UserAlreadyExistsException when the username is already taken.
      */
     @Test
-    public void test_signUp_existingUsername_throwsUserAlreadyExistsException() {
+    void test_signUp_existingUsername_throwsUserAlreadyExistsException() {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto("existingUser", "password", "email@example.com");
         when(userService.findByUsername(signUpRequestDto.username()))
                 .thenReturn(Mono.just(new User()));

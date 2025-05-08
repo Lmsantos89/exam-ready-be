@@ -36,7 +36,7 @@ class UserServiceTest {
      * the method returns an empty Mono, indicating no user found.
      */
     @Test
-    public void testFindByUsername_EmptyUsername() {
+    void testFindByUsername_EmptyUsername() {
         // Arrange
         String emptyUsername = "";
         when(userRepository.findByUsername(emptyUsername)).thenReturn(Mono.empty());
@@ -56,7 +56,7 @@ class UserServiceTest {
      * Verifies that the method correctly returns the User Mono from the repository
      */
     @Test
-    public void test_findByUsername_returnsUserFromRepository() {
+    void test_findByUsername_returnsUserFromRepository() {
         String username = "testUser";
         User expectedUser = new User();
         expectedUser.setUsername(username);
@@ -75,7 +75,7 @@ class UserServiceTest {
      * Verifies that a new user is saved successfully with correct attributes
      */
     @Test
-    public void test_saveUser_successfulSave() {
+    void test_saveUser_successfulSave() {
         SignUpRequestDto dto = new SignUpRequestDto("testuser", "test@example.com", "password");
         User expectedUser = new User();
         expectedUser.setUsername(dto.username());
