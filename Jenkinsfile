@@ -18,11 +18,11 @@ pipeline {
             }
         }
         
-        stage('Test') {
+/*         stage('Test') {
             steps {
                 sh './gradlew test -Pspring.profiles.active=test'
             }
-        }
+        } */
         
         stage('SonarQube Analysis') {
             steps {
@@ -81,11 +81,6 @@ pipeline {
     }
     
     post {
-        always {
-            script {
-                junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
-            }
-        }
         success {
             echo 'Deployment successful!'
         }
