@@ -82,7 +82,7 @@ pipeline {
     
     post {
         always {
-            node {
+            script {
                 junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
             }
         }
