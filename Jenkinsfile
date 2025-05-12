@@ -82,8 +82,11 @@ pipeline {
     
     post {
         always {
-            junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
-            jacoco execPattern: '**/build/jacoco/test.exec'
+            node {
+                junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
+                jacoco execPattern: '**/build/jacoco/test.exec'
+            }
+
         }
         success {
             echo 'Pipeline completed successfully!'
