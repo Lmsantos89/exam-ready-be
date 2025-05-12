@@ -12,7 +12,7 @@ pipeline {
         APP_NAME = 'Exam Ready'
         DEPLOY_DIR = '/opt/app'
         APP_PORT = '8080'
-        JAVA_HOME = tool 'JDK 21'
+        JAVA_HOME = '/usr/lib/jvm/java-21-amazon-corretto'
         PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
     }
 
