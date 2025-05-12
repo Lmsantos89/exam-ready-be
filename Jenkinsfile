@@ -3,14 +3,17 @@ pipeline {
 
     tools {
         gradle 'Gradle'
+        jdk 'JDK21'
     }
 
     environment {
-        STAGING_SERVER = '3.78.230.46' //
+        STAGING_SERVER = '3.78.230.46'
         STAGING_USER = 'ec2-user'
         APP_NAME = 'Exam Ready'
         DEPLOY_DIR = '/opt/app'
         APP_PORT = '8080'
+        JAVA_HOME = tool 'JDK21'
+        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
     }
 
     stages {
@@ -22,6 +25,7 @@ pipeline {
 
         stage('Build') {
             steps {
+                sh 'java -version'
                 sh 'gradle clean build -x test'
             }
         }
