@@ -4,7 +4,7 @@ pipeline {
     tools {
         // Remove the OpenJDK installation since it's causing issues
         // Just use the JDK that's already installed on the Jenkins agent
-        jdk 'JDK'
+        jdk 'JDK 21'
     }
     
     stages {
