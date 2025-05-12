@@ -22,22 +22,25 @@ class ExamReadyApplicationTests {
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.4")
             .withDatabaseName("examready")
             .withUsername("examready_user")
-            .withPassword("examready_pass");
+            .withPassword("examready_pass")
+            .withReuse(true);
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
-        String r2dbcUrl = "r2dbc:postgresql://" +
-                postgres.getHost() + ":" +
-                postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT) +
-                "/" + postgres.getDatabaseName();
+        if (postgres.isRunning()) {
+            String r2dbcUrl = "r2dbc:postgresql://" +
+                    postgres.getHost() + ":" +
+                    postgres.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT) +
+                    "/" + postgres.getDatabaseName();
 
-        registry.add("spring.r2dbc.url", () -> r2dbcUrl);
-        registry.add("spring.r2dbc.username", postgres::getUsername);
-        registry.add("spring.r2dbc.password", postgres::getPassword);
+            registry.add("spring.r2dbc.url", () -> r2dbcUrl);
+            registry.add("spring.r2dbc.username", postgres::getUsername);
+            registry.add("spring.r2dbc.password", postgres::getPassword);
 
-        registry.add("spring.flyway.url", postgres::getJdbcUrl);
-        registry.add("spring.flyway.user", postgres::getUsername);
-        registry.add("spring.flyway.password", postgres::getPassword);
+            registry.add("spring.flyway.url", postgres::getJdbcUrl);
+            registry.add("spring.flyway.user", postgres::getUsername);
+            registry.add("spring.flyway.password", postgres::getPassword);
+        }
     }
 
     @Test
