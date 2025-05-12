@@ -14,13 +14,24 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh './gradlew clean build -Pspring.profiles.active=staging'
+                sh '''
+                # Set JAVA_HOME to the correct path
+                export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto.x86_64
+                export PATH=$JAVA_HOME/bin:$PATH
+
+                # Run Gradle with explicit Java home
+                gradle -Dorg.gradle.java.home=/usr/lib/jvm/java-21-amazon-corretto.x86_64 clean build -x test
+                '''
             }
         }
         
         stage('Test') {
             steps {
-                sh './gradlew test -Pspring.profiles.active=staging'
+                sh '''
+                export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto.x86_64
+                export PATH=$JAVA_HOME/bin:$PATH
+                gradle -Dorg.gradle.java.home=/usr/lib/jvm/java-21-amazon-corretto.x86_64 test
+                '''
             }
         }
         
