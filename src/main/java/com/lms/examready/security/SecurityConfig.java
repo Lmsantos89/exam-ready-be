@@ -14,6 +14,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.web.server.SecurityWebFiltersOrder.AUTHENTICATION;
 
@@ -31,7 +32,9 @@ public class SecurityConfig {
                 .logout(ServerHttpSecurity.LogoutSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
                         // Public endpoints
-                        .pathMatchers(POST, "/api/auth/sign-in", "/api/auth/sign-up").permitAll()
+                        .pathMatchers( POST,"/api/auth/sign-in", "/api/auth/sign-up").permitAll()
+                        .pathMatchers( GET,"/actuator/health").permitAll()
+
 
                         // All other endpoints require authentication
                         .anyExchange().authenticated()
