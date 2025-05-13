@@ -9,9 +9,10 @@ plugins {
 group = 'com.lms'
 version = '0.0.1-SNAPSHOT'
 
-tasks.withType(JavaCompile).configureEach {
-	options.fork = true
-	options.forkOptions.executable = "$System.env.JAVA_HOME/bin/javac"
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
 }
 
 configurations {
