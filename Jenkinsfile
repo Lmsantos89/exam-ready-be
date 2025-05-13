@@ -4,7 +4,7 @@ pipeline {
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-21-amazon-corretto.x86_64'
         EC2_USER = 'ec2-user'
-        EC2_HOST = '52.59.17.136'
+        EC2_HOST = '54.93.247.113'
         DEPLOY_DIR = '/opt/exam-ready-be'
         APP_NAME = 'exam-ready-be'
         ENVIRONMENT = 'staging'
