@@ -106,7 +106,7 @@ EOT'
                     sh "ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'sudo systemctl status ${APP_NAME}'"
 
                     // Wait for application to start and check health
-                    sh "sleep 60"
+                    sh "sleep 20"
                     sh "ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'curl -f http://localhost:8080/actuator/health || echo \"Health check failed but continuing\"'"
                 }
             }
