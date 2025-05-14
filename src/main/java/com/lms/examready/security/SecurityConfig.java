@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .logout(ServerHttpSecurity.LogoutSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
                         // Public endpoints
-                        .pathMatchers( POST,"/api/auth/sign-in", "/api/auth/sign-up").permitAll()
+                        .pathMatchers("/api/auth/sign-in", "/api/auth/sign-up").permitAll()
                         .pathMatchers( GET,"/actuator/health").permitAll()
 
 
